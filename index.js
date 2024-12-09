@@ -19,15 +19,19 @@ mongoose.connect(MONGO_URL)
     console.log(err);
   });
 
-
-const userSchema = new  mongoose.Schema({
-    name:String,
-    age:Number,
+// Define the user schema and model
+const userSchema = new mongoose.Schema({
+    id: Number,
+    name: String,
+    age: Number,
+    dept: String,
+    gender: String, 
 });
 
-const userModel = mongoose.model("sdata",userSchema)
+const userModel = mongoose.model("sdata", userSchema); // Correct model name (lowercase)
 
-app.get("/getUsers",async(req,res)=>{
-    const userData = await UserModel.find();
-    res.json(user);
-});
+app.get('/getUsers',(req,res)=>{
+  userModel.find()
+  .then(users=>res.json(sdata))
+  .catch(err => res.json(err))
+})
