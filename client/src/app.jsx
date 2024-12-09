@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'; // Import useState
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -7,13 +7,18 @@ const App = () => {
 
     useEffect(() => {
         axios.get('http://localhost:5000/getUsers')
-            .then(response => setUsers(response.data)) // Use 'response' instead of 'users'
-            .catch(err => console.log(err));
+            .then(response => {
+                console.log("Fetched Users:", response.data); // Log the response to check the data
+                setUsers(response.data); // Set the users data
+            })
+            .catch(err => {
+                console.error("Error fetching data:", err); // Log any errors that occur during fetching
+            });
     }, []);
 
     return (
         <div className="w-100 100-vh d-flex justify-content-center align-items-center">
-            <div className='w-50'>
+            <div className="w-50">
                 <table className="table">
                     <thead>
                         <tr>
@@ -23,14 +28,21 @@ const App = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {users.map(user => (
-                            <tr key={user.id}> {/* Add a unique key for each row */}
-                                <td>{user.id}</td>
-                                <td>{user.name}</td>
-                                <td>{user.age}</td>
-                            </tr>
-                        ))}
-                    </tbody>
+  {users.length > 0 ? (
+    users.map(user => (
+      <tr key={user._id}> {/* Use _id for key if available */}
+        <td>{user.id}</td>
+        <td>{user.name}</td>
+        <td>{user.age}</td>
+      </tr>
+    ))
+  ) : (
+    <tr>
+      <td colSpan="3">No data available</td> {/* Show message if no users */}
+    </tr>
+  )}
+</tbody>
+
                 </table>
             </div>
         </div>
